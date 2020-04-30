@@ -16,7 +16,7 @@ int prioritet(char ch)
     default: return -1;
     }
 }
-string infx2pstfx(std::string pstfx)
+string infx2pstfx(string pstfx)
 {
     TStack<char> stack;
     string vivod = "";
