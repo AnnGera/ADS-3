@@ -1,5 +1,6 @@
-#include <iostream>
 #include "tstack.h"
+#include <string>
+#include <iostream>
 using namespace std;
 
 int prioritet(char ch)
@@ -25,22 +26,22 @@ string infx2pstfx(std::string pstfx)
         int priority = prioritet(ch);
 
         if (priority == -1)
-            vivod = +ch;
+              vivod.append(string(1,ch));
         else
             if (stack.isEmpty() || priority == 0 || priority > prioritet(stack.get()))
                 stack.push(ch);
-            else if (ch == ')')
+            else
             {
+                if (ch == ')')
                 while (true)
                 {
                     char lastStackEl = stack.get();
                     stack.pop();
                     if (lastStackEl != '(')
-                        vivod = +ch;
+                    vivod.append(string(1,lastStackEl));
                     else
                         break;
                 }
-            }
             else
             {
                 while (!stack.isEmpty())
@@ -48,19 +49,19 @@ string infx2pstfx(std::string pstfx)
                     char lastStackEl = stack.get();
                     stack.pop();
                     if (prioritet(lastStackEl) >= priority)
-                        vivod = +ch;
+                    vivod.append(string(1,lastStackEl));
                 }
                 stack.push(ch);
             }
+           }
     }
    
         while (!stack.isEmpty()) {
-         char lastStackEl = stack.get();
-         stack.pop();
-         vivod = +ch;   
+        char lastStackEl = stack.get();
+        stack.pop();
+        vivod.append(string(1,lastStackEl));
         }
-    return vivod;
-    
+    return vivod;  
 }
 int vichislen(int a, int b, char search)
 {
