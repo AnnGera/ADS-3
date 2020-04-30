@@ -30,18 +30,18 @@ string infx2pstfx(std::string pstfx)
         else
             if (stack.isEmpty() || priority == 0 || priority > prioritet(stack.get()))
                 stack.push(ch);
-            else if (ch == ')')
+            else
             {
+                if (ch == ')')
                 while (true)
                 {
                     char lastStackEl = stack.get();
                     stack.pop();
                     if (lastStackEl != '(')
-                    vivod.append(string(1,ch));
+                    vivod.append(string(1,lastStackEl));
                     else
                         break;
                 }
-            }
             else
             {
                 while (!stack.isEmpty())
@@ -49,10 +49,11 @@ string infx2pstfx(std::string pstfx)
                     char lastStackEl = stack.get();
                     stack.pop();
                     if (prioritet(lastStackEl) >= priority)
-                    vivod.append(string(1,ch));
+                    vivod.append(string(1,lastStackEl));
                 }
                 stack.push(ch);
             }
+           }
     }
    
         while (!stack.isEmpty()) {
@@ -60,8 +61,7 @@ string infx2pstfx(std::string pstfx)
         stack.pop();
         vivod.append(string(1,lastStackEl));
         }
-    return vivod;
-    
+    return vivod;  
 }
 int vichislen(int a, int b, char search)
 {
