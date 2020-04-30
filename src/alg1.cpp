@@ -55,8 +55,9 @@ string infx2pstfx(std::string pstfx)
     }
    
         while (!stack.isEmpty()) {
-        vivod+= stack.get();
-        stack.pop();
+         char lastStackEl = stack.get();
+         stack.pop();
+         vivod = +ch;   
         }
     return vivod;
     
