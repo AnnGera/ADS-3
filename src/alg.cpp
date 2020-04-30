@@ -1,9 +1,8 @@
-#include "tstack.h"
-#include <string>
 #include <iostream>
-using namespace std;
+#include "tstack.h"
+using namespace std; 
 
-int prioritet(char ch)
+int getPriority(char ch)
 {
     switch (ch)
     {
@@ -16,19 +15,18 @@ int prioritet(char ch)
     default: return -1;
     }
 }
-string infx2pstfx(std::string pstfx)
+string infx2pstfx(string pstfx)
 {
     TStack<char> stack;
     string vivod = "";
     for (int i = 0; i < pstfx.size(); i++)
     {
         char ch = pstfx[i];
-        int priority = prioritet(ch);
-
+        int priority = getPriority(ch);
         if (priority == -1)
               vivod.append(string(1,ch));
         else
-            if (stack.isEmpty() || priority == 0 || priority > prioritet(stack.get()))
+            if (stack.isEmpty() || priority == 0 || priority > getPriority(stack.get()))
                 stack.push(ch);
             else
             {
@@ -48,7 +46,7 @@ string infx2pstfx(std::string pstfx)
                 {
                     char lastStackEl = stack.get();
                     stack.pop();
-                    if (prioritet(lastStackEl) >= priority)
+                    if (getPriority(lastStackEl) >= priority)
                     vivod.append(string(1,lastStackEl));
                 }
                 stack.push(ch);
@@ -56,7 +54,8 @@ string infx2pstfx(std::string pstfx)
            }
     }
    
-        while (!stack.isEmpty()) {
+        while (!stack.isEmpty()) 
+        {
         char lastStackEl = stack.get();
         stack.pop();
         vivod.append(string(1,lastStackEl));
@@ -81,21 +80,17 @@ int eval(string pst)
     {
         char ch = pst[i];
         int priority = prioritet(ch);
-
         if (priority == -1)
             stack.push(ch - 48);
         else
         {
             int  a = stack.get();
             stack.pop();
-
             int b = stack.get();
             stack.pop();
-
             int result = vichislen(a, b, ch);
             stack.push(result);
         }
-
     }
     return stack.get();
 }
