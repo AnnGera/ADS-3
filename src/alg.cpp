@@ -1,6 +1,6 @@
 #include <iostream>
 #include "tstack.h"
-using namespace std; 
+using namespace std;
 
 int getPriority(char ch)
 {
@@ -11,86 +11,93 @@ int getPriority(char ch)
     case '+': return 2;
     case '-': return 2;
     case '*': return 3;
-    case '/': return 3;
+    case '/': return 3;    
     default: return -1;
     }
 }
-string infx2pstfx(string pstfx)
+
+string infx2pstfx(string inf)
 {
     TStack<char> stack;
-    string vivod = "";
-    for (int i = 0; i < pstfx.size(); i++)
+    string out = "";
+    for (int i = 0; i < inf.size(); i++)
     {
-        char ch = pstfx[i];
+        char ch = inf[i];
         int priority = getPriority(ch);
-        if (priority == -1)
-              vivod.append(string(1,ch));
+
+        if ( priority == -1)
+            out.append(string(1,ch));
         else
-            if (stack.isEmpty() || priority == 0 || priority > getPriority(stack.get()))
+            if( stack.isEmpty() || priority == 0 || priority > getPriority(stack.get()) )
                 stack.push(ch);
             else
             {
-                if (ch == ')')
-                while (true)
+                if ( ch == ')')
+                    while(true)
+                    {
+                        char lastStackEl = stack.get();
+                        stack.pop();
+                        if (lastStackEl != '(')
+                            out.append(string(1,lastStackEl));
+                        else
+                            break;
+                    }
+                else
                 {
-                    char lastStackEl = stack.get();
-                    stack.pop();
-                    if (lastStackEl != '(')
-                    vivod.append(string(1,lastStackEl));
-                    else
-                        break;
+                    while(!stack.isEmpty())
+                    {
+                        char lastStackEl = stack.get();
+                        stack.pop();
+                        if (getPriority(lastStackEl) >= priority)
+                            out.append(string(1,lastStackEl));
+                    }
+                    stack.push(ch);
                 }
-            else
-            {
-                while (!stack.isEmpty())
-                {
-                    char lastStackEl = stack.get();
-                    stack.pop();
-                    if (getPriority(lastStackEl) >= priority)
-                    vivod.append(string(1,lastStackEl));
-                }
-                stack.push(ch);
             }
-           }
     }
-   
-        while (!stack.isEmpty()) 
-        {
+    while(!stack.isEmpty())
+    {
         char lastStackEl = stack.get();
         stack.pop();
-        vivod.append(string(1,lastStackEl));
-        }
-    return vivod;  
+        out.append(string(1,lastStackEl));
+    }
+    return out;
 }
-int vichislen(int a, int b, char search)
+
+int calculate(int num1, int num2, char operation)
 {
-    switch (search)
+    switch (operation)
     {
-    case '+': return a + b;
-    case '-': return a - b;
-    case '*': return a * b;
-    case '/': return a / b;
+    case '+': return num1 + num2;
+    case '-': return num1 - num2;
+    case '*': return num1 * num2;
+    case '/': return num1 / num2;    
     default: return -1;
     }
 }
+
 int eval(string pst)
 {
     TStack<int> stack;
     for (int i = 0; i < pst.size(); i++)
     {
         char ch = pst[i];
-        int priority = prioritet(ch);
-        if (priority == -1)
+        int priority = getPriority(ch);
+
+        if ( priority == -1)
             stack.push(ch - 48);
         else
         {
-            int  a = stack.get();
+            int  num1=stack.get(); 
             stack.pop();
-            int b = stack.get();
+
+            int num2 = stack.get();
             stack.pop();
-            int result = vichislen(a, b, ch);
+
+            int result = calculate(num2, num1, ch);
             stack.push(result);
         }
+
     }
     return stack.get();
 }
